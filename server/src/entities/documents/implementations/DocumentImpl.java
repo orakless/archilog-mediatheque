@@ -5,12 +5,16 @@ import entities.documents.Document;
 import errors.EmpruntException;
 import errors.ReservationException;
 import errors.RetourException;
+import structures.Mediatheque;
 
 public abstract class DocumentImpl implements Document {
     int numero;
-
+    Abonne emprunteur;
+    Abonne reserveur;
     public DocumentImpl(int numero) {
         this.numero = numero;
+        this.emprunteur = null;
+        this.reserveur = null;
     }
 
     @Override
@@ -33,7 +37,13 @@ public abstract class DocumentImpl implements Document {
      */
     @Override
     public void emprunt(Abonne ab) throws EmpruntException {
-        return;
+        synchronized (this) {
+            if (emprunteur != null)
+                throw new EmpruntException("Ce document est déjà emprunté");
+            this.emprunteur = ab;
+            Mediatheque mediatheque = Mediatheque.getInstance();
+            mediatheque.insertDocument(this.numero, this);
+        }
     }
 
     /**
@@ -41,6 +51,17 @@ public abstract class DocumentImpl implements Document {
      **/
     @Override
     public void retour() throws RetourException {
-        return;
+        synchronized (this) {
+            if (this.emprunteur == null)
+                throw new RetourException("Ce document n'est pas emprunté.");
+            this.emprunteur = null;
+            Mediatheque mediatheque = Mediatheque.getInstance();
+            mediatheque.insertDocument(this.numero, this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Document non-identifié [#" + numero + "]";
     }
 }
