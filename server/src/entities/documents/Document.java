@@ -1,4 +1,9 @@
-package documents;
+package entities.documents;
+
+import entities.Abonne;
+import errors.EmpruntException;
+import errors.ReservationException;
+import errors.RetourException;
 
 public interface Document {
     int numero();
