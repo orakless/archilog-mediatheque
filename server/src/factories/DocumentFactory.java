@@ -19,7 +19,7 @@ public class DocumentFactory implements IDocumentFactory {
                         result.getBoolean("adult"));
             }
             default: {
-                System.err.println("Type " + result.getString("type") + " not implemented.");
+                System.err.println("Type " + result.getString("type") + " non implémenté.");
                 return null;
             }
         }
