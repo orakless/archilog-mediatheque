@@ -7,14 +7,39 @@ import errors.ReservationException;
 import errors.RetourException;
 import structures.Mediatheque;
 
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public abstract class DocumentImpl implements Document {
+    private static final long RESERVATION_TIME_LIMIT = 60 * 90 * 1000;
     int numero;
     Abonne emprunteur;
     Abonne reserveur;
+    Date reservationTimeLimit;
+
+    Timer reservationTimer;
+
     public DocumentImpl(int numero) {
         this.numero = numero;
-        this.emprunteur = null;
-        this.reserveur = null;
+    }
+
+    private class ReservationTimer extends TimerTask {
+        private Document document;
+
+        public ReservationTimer(Document document) {
+            this.document = document;
+        }
+
+        @Override
+        public void run() {
+            try {
+                this.document.reservation(null);
+            } catch (ReservationException e) {
+                System.err.println("N'a pas pu retirer la réservation pour le document " + document.numero());
+            }
+        }
     }
 
     @Override
@@ -28,7 +53,16 @@ public abstract class DocumentImpl implements Document {
      */
     @Override
     public void reservation(Abonne ab) throws ReservationException {
-        return;
+        if (ab != null && (reserveur != null || emprunteur != null))
+            throw new ReservationException("Document non réservable.");
+        this.reserveur = ab;
+        this.reservationTimer = null;
+        this.reservationTimeLimit = null;
+        if (ab != null) {
+            reservationTimeLimit = new Date(System.currentTimeMillis() + RESERVATION_TIME_LIMIT);
+            reservationTimer = new Timer();
+            reservationTimer.schedule(new ReservationTimer(this), RESERVATION_TIME_LIMIT);
+        }
     }
 
     /**
@@ -38,8 +72,10 @@ public abstract class DocumentImpl implements Document {
     @Override
     public void emprunt(Abonne ab) throws EmpruntException {
         synchronized (this) {
+            if (reserveur != null && reserveur != ab)
+                throw new EmpruntException("Ce document est déjà réservé jusqu'à " + DateFormat.getInstance().format(reservationTimeLimit));
             if (emprunteur != null)
-                throw new EmpruntException("Ce document est déjà emprunté");
+                throw new EmpruntException("Ce document est déjà emprunté.");
             this.emprunteur = ab;
             Mediatheque mediatheque = Mediatheque.getInstance();
             mediatheque.insertDocument(this.numero, this);
