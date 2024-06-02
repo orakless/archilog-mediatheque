@@ -1,9 +1,9 @@
-package structures;
+package server.structures;
 
-import entities.Abonne;
-import entities.documents.Document;
-import entities.wrappers.EntityWrapper;
-import factories.IDocumentFactory;
+import server.entities.Abonne;
+import server.entities.documents.Document;
+import server.entities.wrappers.EntityWrapper;
+import server.factories.IDocumentFactory;
 
 import javax.print.attribute.standard.Media;
 import java.sql.Connection;
@@ -49,5 +49,13 @@ public class Mediatheque {
 
     public void insertAbonne(int id, Abonne abonne) {
         this.abonnes.insertEntity(id, abonne);
+    }
+
+    public List<Document> getDocuments() {
+        return this.documents.getEntityList();
+    }
+
+    public List<Abonne> getAbonnes() {
+        return this.abonnes.getEntityList();
     }
 }

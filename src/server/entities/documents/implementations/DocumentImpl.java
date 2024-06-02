@@ -1,11 +1,11 @@
-package entities.documents.implementations;
+package server.entities.documents.implementations;
 
-import entities.Abonne;
-import entities.documents.Document;
-import errors.EmpruntException;
-import errors.ReservationException;
-import errors.RetourException;
-import structures.Mediatheque;
+import server.entities.Abonne;
+import server.entities.documents.Document;
+import server.errors.EmpruntException;
+import server.errors.ReservationException;
+import server.errors.RetourException;
+import server.structures.Mediatheque;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -13,13 +13,13 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class DocumentImpl implements Document {
-    private static final long RESERVATION_TIME_LIMIT = 60 * 90 * 1000;
+    private static final long RESERVATION_TIME_LIMIT = 10 * 1000;
     int numero;
-    Abonne emprunteur;
-    Abonne reserveur;
-    Date reservationTimeLimit;
+    Abonne emprunteur = null;
+    Abonne reserveur = null;
+    Date reservationTimeLimit = null;
 
-    Timer reservationTimer;
+    Timer reservationTimer = null;
 
     public DocumentImpl(int numero) {
         this.numero = numero;

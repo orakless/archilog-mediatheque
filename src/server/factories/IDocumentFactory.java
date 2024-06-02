@@ -1,6 +1,6 @@
-package factories;
+package server.factories;
 
-import entities.documents.Document;
+import server.entities.documents.Document;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

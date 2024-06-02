@@ -1,8 +1,8 @@
-package structures;
+package server.structures;
 
-import entities.Abonne;
-import entities.documents.Document;
-import factories.IDocumentFactory;
+import server.entities.Abonne;
+import server.entities.documents.Document;
+import server.factories.IDocumentFactory;
 
 import java.sql.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,9 +23,13 @@ public class Database {
 
     private Database() {
         try {
-            this.connect = DriverManager.getConnection("jdbc:postgresql:mediatheque");
+            Class.forName("org.postgresql.Driver");
+            this.connect = DriverManager.getConnection("jdbc:postgresql:mediatheque", "archilog", "archilog");
         } catch (SQLException e) {
             System.err.println("Could not initialize database connection" + e.getMessage());
+            System.exit(1);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Class not found.");
             System.exit(1);
         }
     }

@@ -1,7 +1,7 @@
-package factories;
+package server.factories;
 
-import entities.documents.Document;
-import entities.documents.implementations.DVD;
+import server.entities.documents.Document;
+import server.entities.documents.implementations.DVD;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,7 +15,7 @@ public class DocumentFactory implements IDocumentFactory {
             case "dvd": {
                 return new DVD(
                         result.getInt("id"),
-                        result.getString("titre"),
+                        result.getString("title"),
                         result.getBoolean("adult"));
             }
             default: {

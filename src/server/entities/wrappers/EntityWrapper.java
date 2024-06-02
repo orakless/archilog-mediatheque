@@ -1,4 +1,4 @@
-package entities.wrappers;
+package server.entities.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;
