@@ -1,7 +1,7 @@
 package server.factories;
 
-import server.entities.documents.Document;
-import server.entities.documents.implementations.DVD;
+import server.entities.document.Document;
+import server.entities.implementations.DVD;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

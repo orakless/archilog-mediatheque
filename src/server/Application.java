@@ -1,14 +1,13 @@
 package server;
 
-import server.entities.Abonne;
-import server.entities.documents.Document;
-import server.errors.EmpruntException;
-import server.errors.ReservationException;
-import server.errors.RetourException;
+import com.unodos.Server;
 import server.factories.DocumentFactory;
+import server.services.EmpruntService;
+import server.services.ReservationService;
+import server.services.RetourService;
 import server.structures.Mediatheque;
 
-import java.util.TimerTask;
+import java.io.IOException;
 
 public class Application {
     private final static int RESERVATION_PORT = 3000;
@@ -19,36 +18,15 @@ public class Application {
         Mediatheque mediatheque = Mediatheque.getInstance();
         mediatheque.populate(new DocumentFactory());
 
-        for (Document doc: mediatheque.getDocuments()) {
-            System.out.println(doc.toString());
-        }
-
-        Document document = mediatheque.getDocumentById(1);
-        Abonne abonne = mediatheque.getAbonneById(1);
         try {
-            document.emprunt(abonne);
-        } catch (EmpruntException e) {
-            System.err.println(e.getMessage());
-        }
-
-        for (Document doc: mediatheque.getDocuments()) {
-            System.out.println(doc.toString());
-        }
-
-        try {
-            document.emprunt(abonne);
-        } catch (EmpruntException e) {
-            System.err.println(e.getMessage());
-        }
-
-        try {
-            document.retour();
-        } catch (RetourException e) {
-            System.err.println(e.getMessage());
-        }
-
-        for (Document doc: mediatheque.getDocuments()) {
-            System.out.println(doc.toString());
+            new Thread(new Server(ReservationService.class, RESERVATION_PORT)).start();
+            System.out.println("Serveur de réservation lancé sur le port " + RESERVATION_PORT);
+            new Thread(new Server(EmpruntService.class, EMPRUNT_PORT)).start();
+            System.out.println("Serveur d'emprunt lancé sur le port " + EMPRUNT_PORT);
+            new Thread(new Server(RetourService.class, RETOUR_PORT)).start();
+            System.out.println("Server de retour lancé sur le port " + RETOUR_PORT);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la céation du serveur : " + e.getMessage());
         }
     }
 }

@@ -1,14 +1,13 @@
 package server.structures;
 
 import server.entities.Abonne;
-import server.entities.documents.Document;
+import server.entities.document.Document;
 import server.entities.wrappers.EntityWrapper;
 import server.factories.IDocumentFactory;
 
-import javax.print.attribute.standard.Media;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class Mediatheque {
     private EntityWrapper<Document> documents;
@@ -35,11 +34,11 @@ public class Mediatheque {
             System.exit(1);
         }
     }
-    public Document getDocumentById(int id) {
+    public Optional<Document> getDocumentById(int id) {
         return documents.getEntityById(id);
     }
 
-    public Abonne getAbonneById(int id) {
+    public Optional<Abonne> getAbonneById(int id) {
         return abonnes.getEntityById(id);
     }
 

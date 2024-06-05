@@ -2,6 +2,7 @@ package server.entities.wrappers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentMap;
 
 /***
@@ -29,9 +30,10 @@ public class EntityWrapper<T> {
         }
         return entityList;
     }
-    public T getEntityById(int id) {
+    public Optional<T> getEntityById(int id) {
         synchronized (this) {
-            return entities.getOrDefault(id, null);
+            T entity = entities.getOrDefault(id, null);
+            return (entity != null) ? Optional.of(entity) : Optional.empty();
         }
     }
 

@@ -1,10 +1,8 @@
-package server.entities.documents.implementations;
+package server.entities.implementations;
 
 import server.entities.Abonne;
-import server.entities.documents.Document;
 import server.errors.EmpruntException;
 import server.errors.ReservationException;
-import server.errors.RetourException;
 
 public class DVD extends DocumentImpl {
     public final static int ADULT_MIN_AGE = 16;

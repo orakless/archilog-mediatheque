@@ -1,4 +1,4 @@
-package server.entities.documents;
+package server.entities.document;
 
 import server.entities.Abonne;
 import server.errors.EmpruntException;

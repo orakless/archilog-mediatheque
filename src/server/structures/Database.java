@@ -1,7 +1,7 @@
 package server.structures;
 
 import server.entities.Abonne;
-import server.entities.documents.Document;
+import server.entities.document.Document;
 import server.factories.IDocumentFactory;
 
 import java.sql.*;
@@ -24,7 +24,7 @@ public class Database {
     private Database() {
         try {
             Class.forName("org.postgresql.Driver");
-            this.connect = DriverManager.getConnection("jdbc:postgresql:mediatheque", "archilog", "archilog");
+            this.connect = DriverManager.getConnection("jdbc:postgresql:archilog", "mediatheque", "mediatheque");
         } catch (SQLException e) {
             System.err.println("Could not initialize database connection" + e.getMessage());
             System.exit(1);
