@@ -13,7 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class DocumentImpl implements Document {
-    private static final long RESERVATION_TIME_LIMIT = 10 * 1000;
+    private static final long RESERVATION_TIME_LIMIT = 90 * 60 * 1000;
     int numero;
     Abonne emprunteur = null;
     Abonne reserveur = null;
