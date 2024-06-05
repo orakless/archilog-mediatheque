@@ -14,9 +14,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Optional;
 
-public class ReservationService extends Service {
-    private final static String TRANSMISSION_END = "\u2029";
+import static server.services.CommonServiceConfig.TRANSMISSION_END;
 
+public class ReservationService extends Service {
     public ReservationService(Socket socket) {
         super(socket);
     }

@@ -12,9 +12,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Optional;
 
-public class RetourService extends Service {
-    private final static String TRANSMISSION_END = "\u2029";
+import static server.services.CommonServiceConfig.TRANSMISSION_END;
 
+public class RetourService extends Service {
     public RetourService(Socket socket) {
         super(socket);
     }
@@ -43,6 +43,7 @@ public class RetourService extends Service {
                 documentId = Integer.parseInt(in.readLine());
                 oDocument = mediatheque.getDocumentById(documentId);
             }
+
             Document document = oDocument.get();
             try {
                 document.retour();

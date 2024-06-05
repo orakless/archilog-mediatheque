@@ -9,13 +9,11 @@ import java.util.Scanner;
 
 public class AppliClient {
     private final static String HOST = "localhost";
-    private static int PORT;
-
 
     public static void main(String[] args) {
-        Socket socket = null;
+        Socket socket;
         if(args.length != 1) {
-            System.err.println("Pour lancer le programme il faut qu'il y est au moins argument, le numéro du PORT");
+            System.err.println("Pour lancer le programme il faut qu'il y ait au moins un argument, le numéro du PORT");
             System.exit(1);
         }
         try {
@@ -23,29 +21,28 @@ public class AppliClient {
             BufferedReader clavier = new BufferedReader(new InputStreamReader(System.in));
             BufferedReader sIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter sOut = new PrintWriter(socket.getOutputStream(), true);
-            String line = null;
 
-            while(!line.equals("")) {
-                if(line != null){
-                    sOut.println(line);
+            String line = "";
+            do {
+                if (!line.isEmpty()) sOut.println(line);
+                line = sIn.readLine();
+                while(line != null && !line.equals("\uE000")) {
+                    System.out.println(line);
+                    line = sIn.readLine();
                 }
-                while(!sIn.readLine().equals("\u2029")) {
-                    System.out.println(sIn.readLine());
-                    sOut.println(clavier.readLine());
-                }
+                System.out.print("Réponse (Entrée pour fermer le programme) : ");
                 line = clavier.readLine();
-            }
+            } while (!line.isEmpty());
 
             socket.close();
-
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         if(socket != null) {
-            try{
+            try {
                 socket.close();
-            }catch (IOException ignored){}
+            } catch (IOException ignored){}
         }
     }
 }

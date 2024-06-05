@@ -13,6 +13,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Optional;
 
+import static server.services.CommonServiceConfig.TRANSMISSION_END;
+
 public class EmpruntService extends Service {
     private final static String TRANSMISSION_END = "\u2029";
 
@@ -30,7 +32,6 @@ public class EmpruntService extends Service {
                     true);
 
             out.println("Bonjour. Vous êtes sur le service d'emprunt de document de la médiathèque.");
-
             out.println("Votre numéro d'abonné : ");
             out.println(TRANSMISSION_END);
             int abonneId = Integer.parseInt(in.readLine());
