@@ -11,13 +11,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 import java.util.Optional;
 
 import static server.services.CommonServiceConfig.TRANSMISSION_END;
 
 public class EmpruntService extends Service {
-    private final static String TRANSMISSION_END = "\u2029";
-
     public EmpruntService(Socket socket) {
         super(socket);
     }
@@ -46,7 +45,13 @@ public class EmpruntService extends Service {
             }
             Abonne abonne = oAbonne.get();
 
-            out.println("Votre numéro de document : ");
+            List<Document> documents = mediatheque.getDocuments();
+            out.println("\nListe des documents :");
+            for (Document document: documents) {
+                out.println(" - "+document.toString());
+            }
+
+            out.println("\nLe numéro du document que vous souhaitez emprunter : ");
             out.println(TRANSMISSION_END);
             int documentId = Integer.parseInt(in.readLine());
 
